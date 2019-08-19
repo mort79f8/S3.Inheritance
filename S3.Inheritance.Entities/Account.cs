@@ -7,11 +7,11 @@ namespace S3.Inheritance.Entities
     public class Account :Entity
     {
         #region Fields
-        private string accountNumber;
-        private decimal balance;
-        private DateTime created;
-        private decimal creditLimit;
-        private List<Transaction> transactions;
+        protected string accountNumber;
+        protected decimal balance;
+        protected DateTime created;
+        protected decimal creditLimit;
+        protected List<Transaction> transactions;
         #endregion
 
         #region Constructors
@@ -35,13 +35,14 @@ namespace S3.Inheritance.Entities
         #endregion
 
         #region Properties
-        protected string AccountNumber { get => accountNumber; set => accountNumber = value; }
-        protected decimal Balance { get => balance; set => balance = value; }
-        protected DateTime Created { get => created; set => created = value; }
-        protected decimal CreditLimit { get => creditLimit; set => creditLimit = value; }
-        protected List<Transaction> Transactions { get => transactions; set => transactions = value; }
+        public string AccountNumber { get => accountNumber; set => accountNumber = value; }
+        public decimal Balance { get => balance; set => balance = value; }
+        public DateTime Created { get => created; set => created = value; }
+        public decimal CreditLimit { get => creditLimit; set => creditLimit = value; }
+        public List<Transaction> Transactions { get => transactions; set => transactions = value; }
         #endregion
 
+        #region Methods
         public virtual void Withdraw(decimal amount)
         {
             var validateResult = ValidateAmount(amount);
@@ -99,6 +100,7 @@ namespace S3.Inheritance.Entities
         {
             throw new NotImplementedException();
         }
+        #endregion
     }
 
 }

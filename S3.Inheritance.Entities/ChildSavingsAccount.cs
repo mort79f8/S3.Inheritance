@@ -37,6 +37,7 @@ namespace S3.Inheritance.Entities
         public int YearsLocked { get => yearsLocked; set => yearsLocked = value; }
         #endregion
 
+        #region Methods
         public DateTime CanBeWithdrawedFrom()
         {
             throw new NotImplementedException();
@@ -51,6 +52,6 @@ namespace S3.Inheritance.Entities
         {
             throw new NotImplementedException();
         }
-
+        #endregion
     }
 }

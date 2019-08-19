@@ -4,7 +4,7 @@ using System.Text;
 
 namespace S3.Inheritance.Entities
 {
-    public class Person : Entity
+    public abstract class Person : Entity
     {
 
         #region Fields
@@ -37,10 +37,22 @@ namespace S3.Inheritance.Entities
         #endregion
 
         #region Properties
-        protected string FirstName { get => firstName; set => firstName = value; }
-        protected string LastName { get => lastName; set => lastName = value; }
-        protected string Ssn { get => ssn; set => ssn = value; }
+        public string FirstName { get => firstName; set => firstName = value; }
+        public string LastName { get => lastName; set => lastName = value; }
+        public string Ssn { get => ssn; set => ssn = value; }
         #endregion
 
+        #region Methods
+
+        public static (bool isValid, string errorMsg) ValidateName(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static (bool isValid, string errorMsg) ValidateSsn(string ssn)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
     }
 }
