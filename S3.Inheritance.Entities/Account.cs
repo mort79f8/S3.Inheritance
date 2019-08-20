@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace S3.Inheritance.Entities
 {
@@ -88,17 +90,38 @@ namespace S3.Inheritance.Entities
 
         public static (bool isValid, string errorMsg) ValidateAccountNumber(string accountNumber)
         {
-            throw new NotImplementedException();
+            string accountNumberNoWhiteSpace = Regex.Replace(accountNumber, " ", "");
+
+            if (!(accountNumberNoWhiteSpace.Length >= 9 && accountNumberNoWhiteSpace.Length <= 19))
+            {
+                return (false, "Length of account is not valid");
+            }
+
+            if (!accountNumberNoWhiteSpace.All(char.IsDigit))
+            {
+                return (false, "Account Number is not all numbers, check the numbers.");
+            }
+
+            return (true, "Account number is good");
         }
 
-        public static (bool isValid, string errorMsg) ValidateCreatedDate(DateTime createdDate)
-        {
-            throw new NotImplementedException();
-        }
+        // use ValidateTimeStamp from Transaction class instead because they do the same thing
+        //public static (bool isValid, string errorMsg) ValidateCreatedDate(DateTime createdDate)
+        //{
+        //    throw new NotImplementedException();
+        //    //kan ikke uprette ude i fremtiden
+        //}
 
         public static (bool isValid, string errorMsg) ValidateCreditLimit(decimal creditLimit)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            //må ikke værer et posivtivt tal.
+            if (creditLimit > 0)
+            {
+                return (false, "Creditlimit most be a negative number.");
+            }
+
+            return (true, "Creditlimit is good.");
         }
         #endregion
     }

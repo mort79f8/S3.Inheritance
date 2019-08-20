@@ -22,11 +22,23 @@ namespace S3.Inheritance.Entities
             Sender = sender;
             Receiver = receiver;
             Amount = amount;
-            TimeStamp = timeStamp;
+            if (timeStamp == default)
+            {
+                TimeStamp = DateTime.Now;
+            }
+            else
+            {
+                TimeStamp = timeStamp;
+            }
         }
 
-        public Transaction(string sender, string receiver, decimal amount, DateTime timeStamp)
-            :this(default, sender, receiver, amount, timeStamp)
+        public Transaction(string sender, string receiver, decimal amount)
+            :this(default, sender, receiver, amount, default)
+        {
+
+        }
+
+        public Transaction()
         {
 
         }
@@ -42,12 +54,24 @@ namespace S3.Inheritance.Entities
         #region Methods
         public static (bool isValid, string errorMsg) ValidateTimeStamp(DateTime timeStamp)
         {
-            throw new NotImplementedException();
+            // not allow to be in the future.
+            if (timeStamp >= DateTime.Now)
+            {
+                return (false, "The date is in the future. Please check the date again.");
+            }
+
+            return (true, "date is good.");
         }
 
         public static (bool isValid, string errorMsg) ValidateAmount(decimal amount)
         {
-            throw new NotImplementedException();
+            // 25000 max +-
+            if (amount < -25000 || amount > 25000)
+            {
+                return (false, "Amount is below -25000 or above 25000");
+            }
+
+            return (true, "Amount is good");
         }
         #endregion
     }

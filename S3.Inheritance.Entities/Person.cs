@@ -47,11 +47,28 @@ namespace S3.Inheritance.Entities
         public static (bool isValid, string errorMsg) ValidateName(string name)
         {
             throw new NotImplementedException();
+            // rigtig fulde navn, ingen tal.
         }
 
         public static (bool isValid, string errorMsg) ValidateSsn(string ssn)
         {
-            throw new NotImplementedException();
+            if (ssn != null && ssn.Length == 6)
+            {
+                bool isValid = DateTime.TryParse(ssn.Substring(0, 2) + "-" + ssn.Substring(2, 2) + "-" + ssn.Substring(4, 2), out DateTime convertedSsn);
+
+                if (isValid && convertedSsn < DateTime.Now)
+                {
+                    return (true, "ssn is valid.");
+                }
+                else
+                {
+                    return (false, "ssn is not valid");
+                }
+            }
+
+            return (false, "ssn is not valid");
+
+
         }
         #endregion
     }

@@ -34,10 +34,39 @@ namespace S3.Inheritance.Entities
         public int AccountFee { get; set; }
         public int MonthlyFreeTransactions { get; set; }
         public decimal TransactionFee { get; set; }
-        public int Rating { get; set; }
+        public int Rating
+        {
+            get
+            {
+                if (GetDebts() < -2_500_000 && GetAssets() > 1_250_000)
+                {
+                    return 1;
+                }
+                else if (GetDebts() < -2_500_000 && (GetAssets() >= 50_000 && GetAssets() <= 1_250_000))
+                {
+                    return 2;
+                }
+                else if ((GetDebts() <= -250_000 && GetDebts() >= -2_500_000) && (GetAssets() >= 50_000 && GetAssets() <= 1_250_000))
+                {
+                    return 3;
+                }
+                else if ((GetDebts() < 0 && GetDebts() > -250_000) && (GetAssets() > 0 && GetAssets() <= 50_000) && (GetDebts() * -1) < GetAssets())
+                {
+                    return 4;
+                }
+                else if (((GetDebts() < 0 && GetDebts() > -250_000) && (GetAssets() > 0 && GetAssets() <= 50_000)))
+                {
+                    return 5;
+                }
+                else
+                {
+                    return 6;
+                }
+            }
+        }
         #endregion
 
-        #region Methods
+            #region Methods
         public decimal GetDebts()
         {
             decimal debt = 0;
@@ -80,7 +109,8 @@ namespace S3.Inheritance.Entities
 
         public decimal GetTotalFeesFor(DateTime year)
         {
-            throw new NotImplementedException();
+            // need to return the total of both transaction fees and cost of having X number of accounts.
+
         }
 
         public decimal GetTotalFeesFor(DateTime from, DateTime to)
@@ -88,6 +118,64 @@ namespace S3.Inheritance.Entities
             throw new NotImplementedException();
         }
 
+        private int TransactionsForAMonth(Account account, int month, int year)
+        {
+            List<Transaction> transactionsThisMonth = new List<Transaction>();
+            foreach (Transaction transaction in account.Transactions)
+            {
+                if (transaction.TimeStamp.Year == year && transaction.TimeStamp.Month == month)
+                {
+                    transactionsThisMonth.Add(transaction);
+                }
+            }
+            return transactionsThisMonth.Count;
+        }
+
+        private decimal TransactionFeeForOneMonth(Account account, int month, int year)
+        {
+            int numberOfTransactions = TransactionsForAMonth(account, month, year);
+
+            switch (Rating)
+            {
+                case 1:
+                case 2:
+                    if (numberOfTransactions <= 40)
+                    {
+                        return 0;
+                    }
+                    else
+                    {
+                        return (decimal)((numberOfTransactions - 40) * 0.78);
+                    }
+                case 3:
+                case 4:
+                    if (numberOfTransactions <= 20)
+                    {
+                        return 0;
+                    }
+                    else
+                    {
+                        return (decimal)((numberOfTransactions - 20) * 0.78);
+                    }
+                case 5:
+                case 6:
+                    if (numberOfTransactions <= 10)
+                    {
+                        return 0;
+                    }
+                    else
+                    {
+                        return (decimal)((numberOfTransactions - 10) * 0.78);
+                    }
+                default:
+                    throw new ArgumentException("There is something wrong with the rating calculation, contact admin.");
+            }
+        }
+
+        private decimal CostForAccounts()
+        {
+
+        }
         #endregion
     }
 }
