@@ -172,9 +172,65 @@ namespace S3.Inheritance.Entities
             }
         }
 
-        private decimal CostForAccounts()
+        private decimal PriceForAccountsPrMonth()
         {
-
+            if (Accounts.Count >=1 && Accounts.Count <= 3)
+            {
+                switch (Rating)
+                {
+                    case 1:
+                    case 2:
+                        return (decimal)23.00;
+                    case 3:
+                    case 4:
+                        return (decimal)29.00;
+                    case 5:
+                    case 6:
+                        return (decimal)38.00;
+                    default:
+                        throw new ArgumentException("Something is wrong contact admin");
+                }
+                
+            }
+            else if (Accounts.Count >= 4 && Accounts.Count <= 9)
+            {
+                switch (Rating)
+                {
+                    case 1:
+                    case 2:
+                        return (decimal)60.00;
+                    case 3:
+                    case 4:
+                        return (decimal)87.00;
+                    case 5:
+                    case 6:
+                        return (decimal)114.00;
+                    default:
+                        throw new ArgumentException("Something is wrong contact admin");
+                }
+            }
+            else if (Accounts.Count > 9)
+            {
+                switch (Rating)
+                {
+                    case 1:
+                    case 2:
+                        return (decimal)6.00 * Accounts.Count;
+                    case 3:
+                    case 4:
+                        return (decimal)13.00 * Accounts.Count;
+                    case 5:
+                    case 6:
+                        return (decimal)19.75 * Accounts.Count;
+                    default:
+                        throw new ArgumentException("Something is wrong contact admin");
+                }
+                
+            }
+            else
+            {
+                throw new ArgumentException("Number of accounts is invalid");
+            }
         }
         #endregion
     }
